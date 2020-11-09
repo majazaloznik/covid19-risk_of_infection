@@ -1,0 +1,54 @@
+---
+title: Visualising the relative risk of infection by age group and region
+output:
+  html_document:
+    code_folding: hide
+---
+
+The inspiration for this visualisation comes via Zarja form [this Swiss source]( https://twitter.com/firefoxx66/status/1325187943569481733?s=19 )
+
+It states:
+
+_"This is an approximation with the following assumptions:
+for every new infection discovered (and isolated) in the past
+10 days remain 4 ongoing infections undiagnosed and undetected."_
+
+I am assuming therefore that they have a age group by region (canton) table of confirmed cases, which they multiply by 4 to get the estimate of total number of infected individuals. Alternatively they might only have a national level age group breakdown and assume it is the same in all cantons. 
+
+#### Data for Slovenia
+
+##### Regional distribution of cases
+
+We have daily data for confirmed cases by municipality and region. There is a small amount of daily fixes to the data, but nothing dramatic enough that it should bias the regional level data to any relevant extent. 
+
+##### Age group distribution of cases
+
+On 26.10. the testing protocol was changed, due to the overwhelming numbers of cases, and limited to high risk groups (mainly older people) and critical infrastructure workers. This means we do not have a currently accurate estimate of the age distribution of covid cases. 
+
+The closest to an unbiased source of the age distribution at the height of the second wave is data for 20. - 24.10., when the numbers were at a high level, but the testing was still undiscriminate. 
+
+As soon as the testing protocol returns to normal, current data will be used. 
+
+##### Age group by region distribution of data
+
+This table is not available. The assumption therefore must be that the age distribution does not vary between regions. This is blatantly false at the local level due to heavy clustering of cases in nurnsing homes, but should even out significantly when aggregated to regional level. 
+
+
+##### Level of undetected cases. 
+
+We estimate the ratio between confirmed cases and total infectious cases using the outputs of the [covid transmission model](https://arxiv.org/pdf/2005.13282.pdf) by Žiga Zaplotnik. Specifically we use the ratio between `infections_median` from his model and the day's confrmed cases as the multiplying factor for each age-region group. 
+
+```{r preliminaries}
+
+
+
+
+
+```
+
+
+
+
+
+
+
