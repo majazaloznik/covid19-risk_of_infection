@@ -1,11 +1,18 @@
 ---
-title: Visualising the relative risk of infection by age group and region
+title: Visualising the probability of meeting a infectious person by age group and region
 output:
   html_document:
     code_folding: hide
 ---
 
+Estimating the probability of meeting a infectious person by age group and region. 
+
 The inspiration for this visualisation comes via Zarja form [this Swiss source]( https://twitter.com/firefoxx66/status/1325187943569481733?s=19 )
+
+![](../images/EmKj__CW0A0BaJA.png)
+ 
+This is an attempt to adapt this visualisaiton to the Slovenian context and data. 
+
 
 It states:
 
@@ -13,15 +20,17 @@ _"This is an approximation with the following assumptions:
 for every new infection discovered (and isolated) in the past
 10 days remain 4 ongoing infections undiagnosed and undetected."_
 
-I am assuming therefore that they have a age group by region (canton) table of confirmed cases, which they multiply by 4 to get the estimate of total number of infected individuals. Alternatively they might only have a national level age group breakdown and assume it is the same in all cantons. 
+I am assuming that they have a age group by region (canton) table of confirmed cases, which they multiply by 4 to get the estimate of total number of infected individuals. Alternatively they might only have a national level age group breakdown and assume it is the same in all cantons. 
+
+They are clearly using the same factor (4) for all age/region groups. This assumes no systemic bias in who/where gets access to testing. 
 
 #### Data for Slovenia
 
-##### Regional distribution of cases
+##### Regional distribution of confirmed cases
 
 We have daily data for confirmed cases by municipality and region. There is a small amount of daily fixes to the data, but nothing dramatic enough that it should bias the regional level data to any relevant extent. 
 
-##### Age group distribution of cases
+##### Age group distribution of confirmed cases
 
 On 26.10. the testing protocol was changed, due to the overwhelming numbers of cases, and limited to high risk groups (mainly older people) and critical infrastructure workers. This means we do not have a currently accurate estimate of the age distribution of covid cases. 
 
@@ -29,22 +38,18 @@ The closest to an unbiased source of the age distribution at the height of the s
 
 As soon as the testing protocol returns to normal, current data will be used. 
 
-##### Age group by region distribution of data
+##### Age group by region distribution of confirmed cases
 
-This table is not available. The assumption therefore must be that the age distribution does not vary between regions. This is blatantly false at the local level due to heavy clustering of cases in nurnsing homes, but should even out significantly when aggregated to regional level. 
+This table is not available. The assumption therefore must be that the age distribution does not vary between regions. This is blatantly false at the local level due to heavy clustering of cases in nurnsing homes, but should even out to acceptable levels when aggregated to regional level. 
 
 
-##### Level of undetected cases. 
+##### Level of undetected cases, or rather, socially infections individuals  
+
+*_Important deviation from the original_*: instead of undetected cases, we are estimating the number of _socially infectious_ individuals. This limits the infectious period to 5 days, which is shorter than the total period of infectiousness in the literature, as it assumes individuals self isolate after their case is confirmed. This seems appropriate for this application as it gives the best estimate of the risk of encounters with a high probability of transmission. 
+
 
 We estimate the ratio between confirmed cases and total infectious cases using the outputs of the [covid transmission model](https://arxiv.org/pdf/2005.13282.pdf) by Žiga Zaplotnik. Specifically we use the ratio between `infections_median` from his model and the day's confrmed cases as the multiplying factor for each age-region group. 
 
-```{r preliminaries}
-
-
-
-
-
-```
 
 
 
