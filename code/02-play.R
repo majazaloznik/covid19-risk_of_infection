@@ -6,7 +6,7 @@ source("code/01-clean.R")
 # add 7 day rolling mean on all vars, calculate ratio
 data %>% 
   mutate( across(where(is.numeric), 
-                 ~ rollmean(.x, 7,na.pad = TRUE),
+                 ~ rollmean(.x, 7, align = "right", na.pad = TRUE),
                  .names = "{col}.7d" )) %>% 
   mutate(ratio = infect.med/confirmed,
          ratio.7d = infect.med/confirmed.7d,
@@ -16,16 +16,21 @@ data %>%
          lag.inv.ratio = confirmed/lag.infect.med ,
          lag.inv.ratio.7d = confirmed.7d/lag.infect.med) -> data
 
-
+data %>% 
+  select(date, infect.med, confirmed, confirmed.7d, ratio, ratio.7d) -> miha
+write_csv(miha,
+          "data/inf_to_confirmed_ratios.csv")
+          
+          
 # plot ratio of infectious to confirmed 11 days later
 ###############################################################################
 
-# png(filename="figures/ratio.png", 800, 480)
+png(filename="figures/ratio.png", 800, 480)
 plot(data$date, data$ratio, 
      ylab = "",
      xlab = "", 
      ylim = c(0,80),
-     xlim = as.Date(c("2020-09-07", "2020-11-08")),
+     xlim = as.Date(c("2020-09-07", "2020-11-15")),
      axes = FALSE,
      panel.first={
        abline(v = as.Date("2020-10-26"), lty = "92", col = "darkgrey")
@@ -42,19 +47,19 @@ mtext(side = 3, line = 1.5,  adj = 0, cex = 1,
 mtext(side = 2, line = 2.5,   cex = 1, 
       "ratio of infectious to confirmed cases")
 mtext(side = 1, line = 2.5,   cex = 1, "date")
-# dev.off()
+ dev.off()
 
 
 # https://sledilnik.slack.com/archives/CV9JJCE67/p1605030090393100
 # plot ratio of infectious to confirmed 11 days later
 ###############################################################################
 
-# png(filename="figures/ratio.lagged.png", 800, 480)
+ png(filename="figures/ratio.lagged.png", 800, 480)
 plot(data$date, data$lag.ratio, 
      ylab = "",
      xlab = "", 
      ylim = c(0,80),
-     xlim = as.Date(c("2020-09-07", "2020-11-08")),
+     xlim = as.Date(c("2020-09-07", "2020-11-15")),
      axes = FALSE,
      panel.first={
        abline(v = as.Date("2020-10-26"), lty = "92", col = "darkgrey")
@@ -71,19 +76,19 @@ mtext(side = 3, line = 1.5,  adj = 0, cex = 1,
 mtext(side = 2, line = 2.5,   cex = 1, 
       "ratio of infectious to confirmed cases")
 mtext(side = 1, line = 2.5,   cex = 1, "date")
-# dev.off()
+ dev.off()
 
 
 
 # plot ratio of  confirmed cases to infectious 11 days earlier 
 ###############################################################################
 
-# png(filename="figures/ratio.lagged.inv.png", 800, 480)
+png(filename="figures/ratio.lagged.inv.png", 800, 480)
 plot(data$date, data$lag.inv.ratio, 
      ylab = "",
      xlab = "", 
-     ylim = c(0,1),
-     xlim = as.Date(c("2020-09-07", "2020-11-08")),
+     ylim = c(0,0.5),
+     xlim = as.Date(c("2020-09-07", "2020-11-015")),
      axes = FALSE,
      panel.first={
        abline(v = as.Date("2020-10-26"), lty = "92", col = "darkgrey")
@@ -100,5 +105,5 @@ mtext(side = 3, line = 1.5,  adj = 0, cex = 1,
 mtext(side = 2, line = 2.5,   cex = 1, 
       "ratio of confirmed cases to infectious ind.")
 mtext(side = 1, line = 2.5,   cex = 1, "date")
-# dev.off()
+dev.off()
 
